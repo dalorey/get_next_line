@@ -6,7 +6,7 @@
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 22:26:38 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/01/11 22:43:50 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/01/11 22:46:51 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@ int	main(void)
 {
 	char		buffer[BUFFER_SIZE];
 	ssize_t		bytes_read;
+	int			fd;
 
 	printf("Buffer_size: %d\n", BUFFER_SIZE);
 	// Open a file
-	int	fd = open("file.txt", O_RDONLY); // Open file in Readonly
+	fd = open("file.txt", O_RDONLY); // Open file in Readonly
 	if (fd == -1)
 	{
 		perror("Error opening file");
