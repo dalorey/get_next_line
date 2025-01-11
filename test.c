@@ -1,12 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/11 22:26:38 by dlorenzo          #+#    #+#             */
+/*   Updated: 2025/01/11 22:43:50 by dlorenzo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>	// read; close;
 #include <fcntl.h> 	// open;
 #include <stdio.h>	// printf;
 
-int	main()
-{
-	char	buffer[BUFFER_SIZE];
-	ssize_t	bytes_read;
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE 512
+#endif
 
+int	main(void)
+{
+	char		buffer[BUFFER_SIZE];
+	ssize_t		bytes_read;
+
+	printf("Buffer_size: %d\n", BUFFER_SIZE);
 	// Open a file
 	int	fd = open("file.txt", O_RDONLY); // Open file in Readonly
 	if (fd == -1)
