@@ -6,7 +6,7 @@
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 16:09:43 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/01/12 21:45:07 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/01/13 07:12:15 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,19 @@ char	*get_next_line(int fd)
 	buffer[bytes_read] = '\0';
 	if (bytes_read == 0)
 		return(NULL);
-	// printf("[get_next_line] Buffer content:\n%s\n", buffer);
+	printf("[get_next_line] Buffer content:\n%s\n", buffer);
 	pos_eol = ft_letterpos(buffer, 10);
-	// printf("[get_next_line] EOL pos: %d\n", pos_eol);
+	printf("[get_next_line] EOL pos: %d\n", pos_eol);
 	pos_eof = ft_letterpos(buffer, (int)EOF);
-	// printf("[get_next_line] EOF pos: %d\n", pos_eof);
+	printf("[get_next_line] EOF pos: %d\n", pos_eof);
 	if (pos_eol >= 0)
 	{
 		// printf("Buffer contains EOL\n");
 		next_line = ft_substr(buffer, (size_t)pos_eol + 1, (size_t)pos_eof - pos_eol - 1);
 		// printf("[EOL] Next line: \n%s\n", next_line);
 		current_line = ft_substr(buffer, 0, (size_t)pos_eol);
-		// printf("[EOL] Current line: \n%s\n", current_line);
-		// printf("[EOL] --- BYE ---\n\n");
+		printf("[EOL] Current line: \n%s\n", current_line);
+		printf("[EOL] --- BYE ---\n\n");
 		return (current_line);
 	}
 	else if ((pos_eol < 0) && (pos_eof) < 0)
@@ -59,11 +59,17 @@ char	*get_next_line(int fd)
 	}
 	else if (pos_eof >= 0)
 	{
-		// printf("Buffer contains EOF\n");
+		printf("[get_next_line] Buffer contains EOF\n");
+		printf("[get_next_line] Buffer content: \n%s\n", buffer);
+		printf("[get_next_line] Current line content: \n%s\n", current_line);
+		printf("[get_next_line] Next line content: \n%s\n", next_line);
 		// Concatenate Buffer & return current line;
-		ft_strjoin(next_line, buffer);
+		current_line = ft_strjoin(current_line, buffer);
+		printf("[get_next_line] Buffer content: \n%s\n", buffer);
+		printf("[get_next_line] Current line content: \n%s\n", current_line);
+		printf("[get_next_line] Next line content: \n%s\n", next_line);
 		// printf("[EOF] --- BYE ---\n\n");
-		return (next_line);
+		return (current_line);
 	}
 	// line = ft_strdup(buffer);
 	// printf("[get_next_line] Line content: \n%s\n", line);
