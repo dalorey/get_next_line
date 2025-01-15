@@ -6,7 +6,7 @@
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 17:34:38 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/01/13 11:57:05 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/01/14 10:30:17 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*ft_substr(const char *str, unsigned int start, size_t len)
 	str_len = ft_strlen(str);
 	if (start >= str_len)
 	{
-		substr = malloc(1);
+		substr = (char *)malloc(1);
 		if (!substr)
 			return (NULL);
 		substr[0] = '\0';
