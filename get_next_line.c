@@ -6,7 +6,7 @@
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 16:09:43 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/01/15 14:44:20 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/01/16 08:15:40 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static char	*ft_set_line(char *line_buf)
 static char	*ft_fill_line(int fd, char *line_buf, char *remainder)
 {
 	char	buffer[BUFFER_SIZE + 1];
+	char	*tmp;
 	int		bytes_read;
 	int		pos_eol;
 	int		pos_eof;
@@ -80,28 +81,31 @@ static char	*ft_fill_line(int fd, char *line_buf, char *remainder)
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	if (bytes_read == -1)
 		return (NULL);
-	if (bytes_read == 0)
-	{
-		buffer[bytes_read] = '\0';
-		// return (NULL);
-	}
+	buffer[bytes_read] = '\0';
 	while (bytes_read > 0)
 	{
-		buffer[bytes_read] = '\0';
 		if (!line_buf)
 			line_buf = ft_strdup(buffer);
 		else
-			line_buf = ft_strjoin(line_buf, buffer);
+		{
+			tmp = ft_strjoin(line_buf, buffer);
+			free (line_buf);
+			line_buf = tmp;
+		}
+		// printf("[fill_line] bytes_read: '%d'\n", bytes_read);
+		// printf("[fill_line] line_buf: '%s'\n", line_buf);
+		// printf("[fill_line] buffer: '%s'\n", buffer);
 		pos_eol = ft_letterpos(buffer, (int) '\n');
 		pos_eof = ft_letterpos(buffer, (int) '\0');
-		if ((pos_eol >= 0) || (pos_eof >= 0))
-			break ;
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read == 0)
+		// printf("[fill_line] pos_eol: '%d'\n", pos_eol);
+		// printf("[fill_line] pos_eof: '%d'\n", pos_eof);
+		if ((pos_eol >= 0) || ((pos_eof >= 0) && (pos_eof < BUFFER_SIZE)))
 		{
-			buffer[0] = '\0';
-			return (NULL);
+			// printf("EOEOEOEOEOEOE!!!!!!!!\n");
+			break ;
 		}
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		buffer[bytes_read] = '\0';
 	}
 	return (line_buf);
 }
@@ -120,6 +124,8 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	line_buf = ft_fill_line(fd, line_buf, remainder);
+	// printf("[get_next_line] line_buf: '%s'\n", line_buf);
+	// printf("[get_next_line] remainder: '%s'\n", remainder);
 	if (!line_buf)
 		return (NULL);
 	line = ft_set_line(line_buf);
