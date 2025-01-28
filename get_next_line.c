@@ -6,7 +6,7 @@
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 16:09:43 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/01/16 14:40:09 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/01/20 09:55:59 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char	*ft_set_line(char *line_buf)
 		pos = pos_eol;
 	else
 		pos = ft_strlen(line_buf);
-	line = ft_substr(line_buf, 0, pos);
+	line = ft_substr(line_buf, 0, pos + 1);
 	return (line);
 }
 
@@ -75,19 +75,25 @@ static char	*ft_fill_line(int fd, char *line_buf, char *remainder)
 	// 	return (NULL);
 	if (remainder)
 	{
+		// printf("[Fill] Free Remainder #1: '%s'\n", remainder);
 		line_buf = ft_strdup(remainder);
-		free (remainder);
-		remainder = NULL;
+		// free (remainder);
+		// remainder = NULL;
 	}
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	if (bytes_read == -1)
 	{
-		free (line_buf);
+		// if (line_buf)
+		// 	free (line_buf);
 		return (NULL);
 	}
 	buffer[bytes_read] = '\0';
-	if (bytes_read == 0)
-		free (remainder);
+	// if (bytes_read == 0)
+	// {
+	// 	printf("[Fill] Free Remainder #2: '%s'\n", remainder);
+	// 	if (remainder)
+	// 		free (remainder);
+	// }
 	while (bytes_read > 0)
 	{
 		if (!line_buf)
@@ -95,7 +101,8 @@ static char	*ft_fill_line(int fd, char *line_buf, char *remainder)
 		else
 		{
 			tmp = ft_strjoin(line_buf, buffer);
-			free (line_buf);
+			if (line_buf)
+				free (line_buf);
 			line_buf = tmp;
 		}
 		pos_eol = ft_letterpos(buffer, (int) '\n');
@@ -104,8 +111,15 @@ static char	*ft_fill_line(int fd, char *line_buf, char *remainder)
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		buffer[bytes_read] = '\0';
 		if (bytes_read == 0)
-			free (remainder);
+		{
+			if (remainder)
+			{
+				// printf("[Fill] Free Remainder #3: '%s'\n", remainder);
+				// free (remainder);
+			}
+		}
 	}
+	free (remainder);
 	// free (buffer);
 	return (line_buf);
 }
@@ -117,6 +131,7 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	line_buf = NULL;
+	line = NULL;
 	if (fd < 0 || BUFFER_SIZE < 1)
 	{
 		// perror("Buffer is too small!");
@@ -127,7 +142,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = ft_set_line(line_buf);
 	remainder = ft_set_remainder(line_buf);
-	free(line_buf);
-	// line_buf = NULL;
+	free (line_buf);
+	line_buf = NULL;
 	return (line);
 }

@@ -6,7 +6,7 @@
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 22:26:38 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/01/16 12:31:40 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/01/20 06:55:58 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(void)
 
 	printf("[Main] *** HELLO ***\n");
 	printf("[Main] BUFFER_SIZE: '%d'\n", BUFFER_SIZE);
-	fd = open("file_longlines.txt", O_RDONLY);
+	fd = open("file_1lines.txt", O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Error opening file!");
