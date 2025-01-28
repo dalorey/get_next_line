@@ -6,7 +6,7 @@
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 22:26:38 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/01/20 06:55:58 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:45:20 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	main(void)
 	line = NULL;
 	while ((line = get_next_line(fd)))
 	{
-		// printf("[Main] call get_next_line #%d\n", i);
 		printf("[Main] Line: '%s'\n", line);
 		free(line);
 	}
