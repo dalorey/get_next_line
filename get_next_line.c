@@ -6,7 +6,7 @@
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 16:09:43 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/01/28 17:41:24 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/01/29 16:41:36 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static char	*ft_set_remainder(char *line_buf)
 	if ((pos_eol < 0) || (pos_eol + 1 >= (int)ft_strlen(line_buf)))
 		return (NULL);
 	next_line_buf = ft_substr(line_buf, pos_eol + 1, ft_strlen(line_buf) - pos_eol - 1);
-	next_line_buf[ft_strlen(next_line_buf)] = '\0';
 	return (next_line_buf);
 }
 
@@ -82,8 +81,11 @@ static char	*ft_fill_line(int fd, char *line_buf, char *remainder)
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	if (bytes_read == -1)
 	{
-		// if (line_buf)
-		// 	free (line_buf);
+		// if (remainder)
+		// {
+		// 	free (remainder);
+		// 	remainder = NULL;
+		// }
 		free (buffer);
 		return (NULL);
 	}
@@ -104,9 +106,19 @@ static char	*ft_fill_line(int fd, char *line_buf, char *remainder)
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		buffer[bytes_read] = '\0';
 	}
+	if (bytes_read == -1)
+	{
+		free (remainder);
+		remainder = NULL;
+		return (NULL);
+	}
 	free (buffer);
 	if (remainder)
+	{
+		// printf("[GNL] Freeing remainder ----------------------------\n");
 		free (remainder);
+		remainder = NULL;
+	}
 	return (line_buf);
 }
 
@@ -125,7 +137,11 @@ char	*get_next_line(int fd)
 	}
 	line_buf = ft_fill_line(fd, line_buf, remainder);
 	if (!line_buf)
+	{
+		free (remainder);
+		remainder = NULL;
 		return (NULL);
+	}
 	line = ft_set_line(line_buf);
 	remainder = ft_set_remainder(line_buf);
 	// printf("[GNL] Line_buf: '%s' // Line: '%s' // Remainder: '%s'\n", line_buf, line, remainder);
