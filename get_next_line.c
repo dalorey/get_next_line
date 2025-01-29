@@ -6,7 +6,7 @@
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 16:09:43 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/01/29 19:21:08 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/01/29 19:42:52 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static char	*ft_set_remainder(char *line_buf)
 	pos_eol = ft_letterpos(line_buf, (int) '\n');
 	if ((pos_eol < 0) || (pos_eol + 1 >= (int)ft_strlen(line_buf)))
 		return (NULL);
-	next_line_buf = ft_substr(line_buf, pos_eol + 1, ft_strlen(line_buf) - pos_eol - 1);
+	next_line_buf = ft_substr(line_buf, pos_eol + 1,
+			ft_strlen(line_buf) - pos_eol - 1);
 	return (next_line_buf);
 }
 
@@ -144,10 +145,7 @@ char	*get_next_line(int fd)
 	line_buf = NULL;
 	line = NULL;
 	if (fd < 0 || BUFFER_SIZE < 1)
-	{
-		// perror("Buffer is too small!");
 		return (NULL);
-	}
 	line_buf = ft_fill_line(fd, line_buf, remainder);
 	if (!line_buf)
 	{
@@ -157,7 +155,6 @@ char	*get_next_line(int fd)
 	}
 	line = ft_set_line(line_buf);
 	remainder = ft_set_remainder(line_buf);
-	// printf("[GNL] Line_buf: '%s' // Line: '%s' // Remainder: '%s'\n", line_buf, line, remainder);
 	free (line_buf);
 	line_buf = NULL;
 	return (line);
