@@ -6,7 +6,7 @@
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 16:09:43 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/01/29 16:41:36 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/01/29 19:21:08 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,24 @@ static char	*ft_fill_line(int fd, char *line_buf, char *remainder)
 	buffer = (char *)malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
+	line_buf = NULL;
 	if (remainder)
 	{
+		if (line_buf)
+			free (line_buf);
 		line_buf = ft_strdup(remainder);
-		// free (remainder);
-		// remainder = NULL;
+		if (!line_buf)
+		{
+			free(buffer);
+			return (NULL);
+		}
 	}
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	if (bytes_read == -1)
 	{
-		// if (remainder)
-		// {
-		// 	free (remainder);
-		// 	remainder = NULL;
-		// }
 		free (buffer);
+		if (line_buf)
+			free (line_buf);
 		return (NULL);
 	}
 	buffer[bytes_read] = '\0';
@@ -97,25 +100,35 @@ static char	*ft_fill_line(int fd, char *line_buf, char *remainder)
 		else
 		{
 			tmp = ft_strjoin(line_buf, buffer);
-			free (line_buf);
+			if (!tmp)
+			{
+				free(line_buf);
+				free(buffer);
+				if (remainder)
+					free(remainder);
+				return (NULL);
+			}
+			free(line_buf);
 			line_buf = tmp;
 		}
 		pos_eol = ft_letterpos(buffer, (int) '\n');
 		if ((pos_eol >= 0) || (ft_strlen(buffer) < BUFFER_SIZE))
 			break ;
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			free(buffer);
+			if (remainder)
+				free(remainder);
+			if (line_buf)
+				free(line_buf);
+			return (NULL);
+		}
 		buffer[bytes_read] = '\0';
-	}
-	if (bytes_read == -1)
-	{
-		free (remainder);
-		remainder = NULL;
-		return (NULL);
 	}
 	free (buffer);
 	if (remainder)
 	{
-		// printf("[GNL] Freeing remainder ----------------------------\n");
 		free (remainder);
 		remainder = NULL;
 	}
