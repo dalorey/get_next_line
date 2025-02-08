@@ -6,7 +6,7 @@
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 16:09:43 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/01/29 19:42:52 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/02/08 23:14:42 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	*ft_set_line(char *line_buf)
 	int		pos_eol;
 	int		pos;
 
-	if (!line_buf)
+	if (!line_buf || !*line_buf)
 		return (NULL);
 	pos_eol = ft_letterpos(line_buf, (int) '\n');
 	if (pos_eol >= 0)
@@ -76,23 +76,13 @@ static char	*ft_fill_line(int fd, char *line_buf, char *remainder)
 	line_buf = NULL;
 	if (remainder)
 	{
-		if (line_buf)
-			free (line_buf);
 		line_buf = ft_strdup(remainder);
 		if (!line_buf)
-		{
-			free(buffer);
-			return (NULL);
-		}
+			return (free(buffer), NULL);
 	}
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	if (bytes_read == -1)
-	{
-		free (buffer);
-		if (line_buf)
-			free (line_buf);
-		return (NULL);
-	}
+		return (free(buffer), free(line_buf), NULL);
 	buffer[bytes_read] = '\0';
 	while (bytes_read > 0)
 	{
@@ -102,13 +92,7 @@ static char	*ft_fill_line(int fd, char *line_buf, char *remainder)
 		{
 			tmp = ft_strjoin(line_buf, buffer);
 			if (!tmp)
-			{
-				free(line_buf);
-				free(buffer);
-				if (remainder)
-					free(remainder);
-				return (NULL);
-			}
+				return (free(line_buf), free(buffer), free(remainder), NULL);
 			free(line_buf);
 			line_buf = tmp;
 		}
@@ -117,23 +101,10 @@ static char	*ft_fill_line(int fd, char *line_buf, char *remainder)
 			break ;
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
-		{
-			free(buffer);
-			if (remainder)
-				free(remainder);
-			if (line_buf)
-				free(line_buf);
-			return (NULL);
-		}
+			return (free(line_buf), free(buffer), free(remainder), NULL);
 		buffer[bytes_read] = '\0';
 	}
-	free (buffer);
-	if (remainder)
-	{
-		free (remainder);
-		remainder = NULL;
-	}
-	return (line_buf);
+	return (free(buffer), free(remainder), remainder = NULL, line_buf);
 }
 
 char	*get_next_line(int fd)
@@ -149,13 +120,16 @@ char	*get_next_line(int fd)
 	line_buf = ft_fill_line(fd, line_buf, remainder);
 	if (!line_buf)
 	{
-		free (remainder);
-		remainder = NULL;
+		if (remainder)
+		{
+			free(remainder);
+			remainder = NULL;
+		}
 		return (NULL);
 	}
 	line = ft_set_line(line_buf);
 	remainder = ft_set_remainder(line_buf);
-	free (line_buf);
+	free(line_buf);
 	line_buf = NULL;
 	return (line);
 }

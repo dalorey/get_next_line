@@ -1,3 +1,4 @@
 This is a long text line longer than 42 buffer!
-Following there is also a long line longer than 42 buffer.
-Finally there is a short line.
+Following there is also a long line longer than 42 buffer. This is a long text line longer than 42 buffer!
+Now there is a short line.
+Finally again a long text line longer than 42 buffer!

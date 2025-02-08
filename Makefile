@@ -6,13 +6,13 @@
 #    By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/12 16:19:02 by dlorenzo          #+#    #+#              #
-#    Updated: 2025/01/16 08:44:17 by dlorenzo         ###   ########.fr        #
+#    Updated: 2025/01/31 18:42:58 by dlorenzo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Variables
 CC = cc
-CFLAGS = -g -Wall -Wextra -Werror -D BUFFER_SIZE=42
+CFLAGS = -Wall -Wextra -Werror -D BUFFER_SIZE=42
 AR = ar rcs
 NAME = get_next_line.a
 LFLAGS = -L. -l:get_next_line.a
