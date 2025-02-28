@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 19:09:49 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/02/28 20:05:08 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/02/28 20:40:54 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <stdio.h> // For printf -- Delete!!!
 /*
 size_t	ft_strlen(const char *s);
@@ -82,14 +82,14 @@ static char	*ft_update_draft(char *draft)
 
 char	*get_next_line(int fd)
 {
-	static char	*draft_line;
+	static char	*draft_line[MAX_FD];
 	char		*line;
 
 	line = NULL;
-	if (fd < 0 || BUFFER_SIZE < 1)
+	if (fd < 0 || BUFFER_SIZE < 1 || fd >= MAX_FD)
 		return (NULL);
-	draft_line = ft_read_line(fd, draft_line);
-	line = ft_clean_line(draft_line);
-	draft_line = ft_update_draft(draft_line);
+	draft_line[fd] = ft_read_line(fd, draft_line[fd]);
+	line = ft_clean_line(draft_line[fd]);
+	draft_line[fd] = ft_update_draft(draft_line[fd]);
 	return (line);
 }

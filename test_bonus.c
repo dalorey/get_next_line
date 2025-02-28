@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   test_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 22:26:38 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/02/28 20:12:17 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/02/28 21:32:00 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,28 @@
 
 int	main(void)
 {
-	char	*line;
-	int		fd;
+	char	*line1;
+	int		fd1;
+	char	*line2;
+	int		fd2;
 
-	printf("[Main] *** HELLO ***\n");
 	printf("[Main] BUFFER_SIZE: '%d'\n", BUFFER_SIZE);
-	fd = open("file_longlines.txt", O_RDONLY);
-	line = get_next_line(fd);
-	while (line != NULL)
+	fd1 = open("file_2lines.txt", O_RDONLY);
+	line1 = get_next_line(fd1);
+	while (line1 != NULL)
 	{
-		printf("[Main] Line: '%s'\n", line);
-		free(line);
-		line = get_next_line(fd);
+		printf("[Main] Line f1: '%s'\n", line1);
+		free(line1);
+		line1 = get_next_line(fd1);
+	}
+	fd2 = open("file_3lines.txt", O_RDONLY);
+	line2 = get_next_line(fd2);
+	while (line2 != NULL)
+	{
+		printf("[Main] Line f2: '%s'\n", line2);
+		free(line2);
+		line2 = get_next_line(fd2);
 	}
 	printf("[Main] Read of file finished!\n");
-	if (close(fd) == -1)
-		return (perror("Error closing file"), 1);
-	printf("[Main] *** BYE ***\n");
-	return (0);
+	return (close (fd1), close (fd2), 0);
 }

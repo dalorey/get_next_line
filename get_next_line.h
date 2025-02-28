@@ -6,15 +6,15 @@
 /*   By: dlorenzo <dlorenzo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:15:34 by dlorenzo          #+#    #+#             */
-/*   Updated: 2025/01/31 16:32:55 by dlorenzo         ###   ########.fr       */
+/*   Updated: 2025/02/28 20:33:57 by dlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <stdlib.h> // For malloc, free;
-# include <unistd.h> // For read, close;
+# include <stdlib.h> // For malloc, free, NULL;
+# include <unistd.h> // For read;
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
